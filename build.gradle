@@ -28,11 +28,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	implementation 'jakarta.validation:jakarta.validation-api:3.1.1'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	//mapstruct: used for easier mapping between dtos and entities
+	implementation 'org.mapstruct:mapstruct:1.6.3'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 
 	runtimeOnly("com.h2database:h2")              // H2 for dev/test
 //	runtimeOnly("com.mysql:mysql-connector-j")    // MySQL driver
