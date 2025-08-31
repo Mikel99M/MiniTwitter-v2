@@ -16,8 +16,6 @@ public interface UserMapper {
     @Mapping(target = "role", constant = "USER")
     User userRegistrationDtoToUser(UserRegistrationDto userRegistrationDto);
 
-
-    @Mapping(target = "password", ignore = true)
     UserResponseDto userToUserResponseDto(User user);
 
 
