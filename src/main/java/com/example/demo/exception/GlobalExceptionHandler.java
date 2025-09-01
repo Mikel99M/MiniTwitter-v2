@@ -21,8 +21,8 @@ public class GlobalExceptionHandler {
     }
 
     // Handle invalid passwords
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, String>> handleIllegalArgument(IllegalArgumentException ex) {
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<Map<String, String>> handleIllegalArgument(InvalidPasswordException ex) {
         Map<String, String> body = new HashMap<>();
         body.put("error", "Invalid input");
         body.put("details", ex.getMessage());
@@ -36,6 +36,15 @@ public class GlobalExceptionHandler {
         body.put("error", "Unexpected error");
         body.put("details", ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    }
+
+    // Username already taken handler
+    @ExceptionHandler(UserNameAlreadyTakenException.class)
+    public ResponseEntity<Map<String, String>> handleIllegalArgument(UserNameAlreadyTakenException ex) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", "Invalid input");
+        body.put("details", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
 }
