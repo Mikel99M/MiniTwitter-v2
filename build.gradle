@@ -44,6 +44,10 @@ dependencies {
 //    implementation 'com.h2database:h2'
 //    runtimeOnly("com.h2database:h2")              // H2 for dev/test
 	runtimeOnly("com.mysql:mysql-connector-j")    // MySQL driver
+
+	//Spring Security
+	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.security:spring-security-crypto:6.5.3'
 }
 
 tasks.named('test') {
