@@ -47,4 +47,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
+    // Handle post not found
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handlePostNotFound(PostNotFoundException ex) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", "User not found");
+        body.put("details", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
+
 }

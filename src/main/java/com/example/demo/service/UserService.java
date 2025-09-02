@@ -1,9 +1,8 @@
-package com.example.demo.user;
+package com.example.demo.service;
 
 import com.example.demo.domain.User;
 import com.example.demo.dto.UserPasswordChangeDto;
 import com.example.demo.dto.UserRegistrationDto;
-import com.example.demo.dto.UserResponseDto;
 import com.example.demo.exception.InvalidPasswordException;
 import com.example.demo.exception.UserNameAlreadyTakenException;
 import com.example.demo.exception.UserNotFoundException;
@@ -14,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -28,6 +25,7 @@ public class UserService {
 
     @Transactional
     public User getUserById(Long id) {
+        log.info("Geting user with id: " + id);
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
@@ -36,6 +34,7 @@ public class UserService {
         log.info("Registering user: " + dto.getUserName());
 
         if (userRepository.existsByUserName(dto.getUserName())) {
+            log.warn("User by " + dto.getUserName() + " already exists.");
             throw new UserNameAlreadyTakenException("User by " + dto.getUserName() + " already exists.");
         }
 
@@ -47,17 +46,18 @@ public class UserService {
     }
 
     @Transactional
-    public void changePassword(UserPasswordChangeDto dto) {
-        log.info("Changing password of user: " + dto.getUserName());
-        User user = userRepository.findById(dto.getId()).orElseThrow(() -> new UserNotFoundException(dto.getId()));
+    public void updateUserPassword(Long id, UserPasswordChangeDto dto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+        log.info("Changing password of user: " + user.getUserName());
 
-        if (!passwordEncoder.matches(dto.getPassword(),user.getPassword())) {
-            log.warn("Current password is incorrect.");
+        if (!passwordEncoder.matches(dto.getCurrentPassword(), user.getPassword())) {
+            log.warn("Incorrect password attempt for user {}", id);
             throw new InvalidPasswordException("Current password is incorrect");
-        } else {
-            user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
-            userRepository.save(user);
         }
+
+        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+        userRepository.save(user);
     }
 
 }

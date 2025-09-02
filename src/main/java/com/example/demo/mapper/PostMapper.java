@@ -11,4 +11,5 @@ public interface PostMapper {
     @Mapping(target = "author", ignore = true)
     Post postDtoToPost(PostDto postDto);
 
+    PostDto postPostToPostDto(Post postById);
 }

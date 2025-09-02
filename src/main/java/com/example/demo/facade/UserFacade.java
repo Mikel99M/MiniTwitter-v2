@@ -1,9 +1,10 @@
 package com.example.demo.facade;
 
+import com.example.demo.dto.UserPasswordChangeDto;
 import com.example.demo.dto.UserRegistrationDto;
 import com.example.demo.dto.UserResponseDto;
 import com.example.demo.mapper.UserMapper;
-import com.example.demo.user.UserService;
+import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -21,5 +22,7 @@ public class UserFacade {
     }
 
 
-
+    public void updateUserPassword(Long id, UserPasswordChangeDto dto) {
+        userService.updateUserPassword(id, dto);
+    }
 }
