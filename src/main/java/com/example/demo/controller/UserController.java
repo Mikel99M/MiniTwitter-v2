@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.PostDto;
 import com.example.demo.dto.UserPasswordChangeDto;
 import com.example.demo.dto.UserRegistrationDto;
 import com.example.demo.dto.UserResponseDto;
@@ -10,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -22,6 +25,16 @@ public class UserController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok().body(userFacade.getUserById(id));
+    }
+
+    @GetMapping(value = "/{id}/posts")
+    public ResponseEntity<List<PostDto>> getPostsMadeByUser(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userFacade.getPostsMadeByUser(id));
+    }
+
+    @GetMapping(value = "/{id}/likePosts")
+    public ResponseEntity<List<PostDto>> getPostsLikedByUser(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userFacade.getPostsLikedByUser(id));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

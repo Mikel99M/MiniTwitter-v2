@@ -46,6 +46,9 @@ public class User {
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "likeGiver", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likedPosts = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
