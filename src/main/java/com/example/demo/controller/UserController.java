@@ -48,4 +48,10 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userFacade.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

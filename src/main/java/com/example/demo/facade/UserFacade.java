@@ -38,4 +38,8 @@ public class UserFacade {
     public List<PostDto> getPostsLikedByUser(Long id) {
         return postMapper.postListToPostDtoList(userService.getPostsLikedByUser(id));
     }
+
+    public void deleteUser(Long id) {
+        userService.deleteUser(id);
+    }
 }

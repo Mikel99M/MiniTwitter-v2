@@ -14,4 +14,16 @@ public class PostFacade {
     public PostDto getPostById(Long id) {
         return postMapper.postPostToPostDto(postService.getPostById(id));
     }
+
+    public PostDto createNewPost(PostDto dto) {
+        return postMapper.postPostToPostDto(postService.createNewPost(dto));
+    }
+
+    public void updatePost(Long id, PostDto dto) {
+        postService.updatePost(id, dto);
+    }
+
+    public void deletePost(Long id) {
+        postService.deletePost(id);
+    }
 }

@@ -91,4 +91,14 @@ public class UserService {
                 .collect(Collectors.toList());
 
     }
+
+    @Transactional
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new UserNotFoundException(id)
+        );
+        log.info("Deleting user with name: " + user.getUserName());
+
+        userRepository.delete(user);
+    }
 }
