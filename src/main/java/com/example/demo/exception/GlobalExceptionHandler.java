@@ -64,4 +64,13 @@ public class GlobalExceptionHandler {
         body.put("details", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
+
+    // Handle like not found
+    @ExceptionHandler(LikeNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleLikeNotFound(LikeNotFoundException ex) {
+        Map<String, String> body = new HashMap<>();
+        body.put("error", "User not found");
+        body.put("details", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
 }
