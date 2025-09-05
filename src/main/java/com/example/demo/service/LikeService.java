@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -47,8 +48,6 @@ public class LikeService {
             likeRepository.save(like);
             log.info("User " + user.getUserName() + " liked post with id: " + post.getId());
         }
-
-
     }
 
     @Transactional
@@ -59,5 +58,24 @@ public class LikeService {
     @Transactional
     public Like getLikeById(Long id) {
         return likeRepository.findById(id).orElseThrow(() -> new LikeNotFoundException(id));
+    }
+
+    @Transactional
+    public List<Post> getAllPostsLikedByUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+        List<Like> likes = user.getLikesGiven();
+        return likes.stream()
+                .map(Like::getLikedPost)
+                .collect(Collectors.toList());
+
+    }
+
+    @Transactional
+    public List<User> getAllUserWhoLikedPost(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
+        List<Like> likes = post.getLikes();
+        return likes.stream()
+                .map(Like::getLikeGiver)
+                .collect(Collectors.toList());
     }
 }

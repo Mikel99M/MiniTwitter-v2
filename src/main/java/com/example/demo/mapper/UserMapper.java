@@ -15,7 +15,7 @@ public interface UserMapper {
     @Mapping(target = "posts", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "lastLoggedInAt", ignore = true)
-    @Mapping(target = "likedPosts", ignore = true)
+    @Mapping(target = "likesGiven", ignore = true)
     @Mapping(target = "role", constant = "USER")
     User userRegistrationDtoToUser(UserRegistrationDto userRegistrationDto);
 

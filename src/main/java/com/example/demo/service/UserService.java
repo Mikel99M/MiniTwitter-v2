@@ -94,7 +94,7 @@ public class UserService {
                 () -> new UserNotFoundException(id)
         );
 
-        return user.getLikedPosts().stream()
+        return user.getLikesGiven().stream()
                 .map(Like::getLikedPost)
                 .collect(Collectors.toList());
 
