@@ -1,16 +1,15 @@
 package com.example.demo.facade;
 
-import com.example.demo.dto.PostDto;
-import com.example.demo.dto.UserPasswordChangeDto;
-import com.example.demo.dto.UserRegistrationDto;
-import com.example.demo.dto.UserResponseDto;
+import com.example.demo.dto.*;
 import com.example.demo.mapper.PostMapper;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 @RequiredArgsConstructor
 public class UserFacade {
 
@@ -31,15 +30,19 @@ public class UserFacade {
         userService.updateUserPassword(id, dto);
     }
 
-    public List<PostDto> getPostsMadeByUser(Long id) {
-        return postMapper.postListToPostDtoList(userService.getPostsMadeByUser(id));
+    public List<PostResponseDto> getPostsMadeByUser(Long id) {
+        return postMapper.postListToPostResponseDtoList(userService.getPostsMadeByUser(id));
     }
 
-    public List<PostDto> getPostsLikedByUser(Long id) {
-        return postMapper.postListToPostDtoList(userService.getPostsLikedByUser(id));
+    public List<PostResponseDto> getPostsLikedByUser(Long id) {
+        return postMapper.postListToPostResponseDtoList(userService.getPostsLikedByUser(id));
     }
 
     public void deleteUser(Long id) {
         userService.deleteUser(id);
+    }
+
+    public List<UserResponseDto> getAllUsers() {
+        return userMapper.userListToUserResponseDtoList(userService.getAllUser());
     }
 }

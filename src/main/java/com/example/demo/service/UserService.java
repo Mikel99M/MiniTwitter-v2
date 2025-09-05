@@ -8,6 +8,7 @@ import com.example.demo.dto.UserRegistrationDto;
 import com.example.demo.exception.InvalidPasswordException;
 import com.example.demo.exception.UserNameAlreadyTakenException;
 import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.exception.UserToYoungToRegisterException;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.repository.PostRepository;
 import com.example.demo.repository.UserRepository;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,18 +40,24 @@ public class UserService {
 
     @Transactional
     public User registerNewUser(UserRegistrationDto dto) {
-        log.info("Registering user: " + dto.getUserName());
-
-        if (userRepository.existsByUserName(dto.getUserName())) {
-            log.warn("User by " + dto.getUserName() + " already exists.");
-            throw new UserNameAlreadyTakenException("User by " + dto.getUserName() + " already exists.");
+        if (dto.getBirthDate().isAfter(LocalDate.now().minusYears(18))) {
+            throw new UserToYoungToRegisterException(dto);
         } else {
 
-        User user = userMapper.userRegistrationDtoToUser(dto);
+            log.info("Registering user: " + dto.getUserName());
 
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+            if (userRepository.existsByUserName(dto.getUserName())) {
+                log.warn("User by name " + dto.getUserName() + " already exists.");
+                throw new UserNameAlreadyTakenException("User by " + dto.getUserName() + " already exists.");
+            } else {
 
-        return userRepository.save(user);
+
+                User user = userMapper.userRegistrationDtoToUser(dto);
+
+                user.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+                return userRepository.save(user);
+            }
         }
     }
 
@@ -100,5 +108,12 @@ public class UserService {
         log.info("Deleting user with name: " + user.getUserName());
 
         userRepository.delete(user);
+    }
+
+    @Transactional
+    public List<User> getAllUser() {
+
+        return userRepository.findAll();
+
     }
 }

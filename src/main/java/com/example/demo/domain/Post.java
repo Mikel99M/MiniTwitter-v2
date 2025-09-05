@@ -35,4 +35,9 @@ public class Post {
     @OneToMany(mappedBy = "likedPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
 
+    @Transient
+    public int getLikeCount() {
+        return likes.size();
+    }
+
 }

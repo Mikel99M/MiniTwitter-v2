@@ -3,7 +3,8 @@ package com.example.demo.service;
 
 import com.example.demo.domain.Post;
 import com.example.demo.domain.User;
-import com.example.demo.dto.PostDto;
+import com.example.demo.dto.PostCreateDto;
+import com.example.demo.dto.PostUpdateDto;
 import com.example.demo.exception.PostNotFoundException;
 import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.mapper.PostMapper;
@@ -13,6 +14,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -30,19 +33,20 @@ public class PostService {
     }
 
     @Transactional
-    public Post createNewPost(PostDto dto) {
+    public Post createNewPost(PostCreateDto dto) {
 
         User user = userRepository.findById(dto.getAuthorId()).orElseThrow(
                 (() -> new UserNotFoundException(dto.getAuthorId())));
         log.info("Creating post from user: " + user.getUserName());
 
-        Post post = postMapper.postDtoToPost(dto);
+        Post post = postMapper.postCreatedDtoToPost(dto);
+        post.setAuthor(user);
 
         return postRepository.save(post);
     }
 
     @Transactional
-    public void updatePost(Long id, PostDto dto) {
+    public void updatePost(Long id, PostUpdateDto dto) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new PostNotFoundException(id)
         );
@@ -59,5 +63,10 @@ public class PostService {
 
         postRepository.delete(post);
 
+    }
+
+    @Transactional
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
     }
 }

@@ -6,9 +6,14 @@ import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
-public class PostDto {
+public class PostResponseDto {
+
+    @NotNull
+    private Long id;
 
     @NotNull
     private Long authorId;
@@ -17,4 +22,9 @@ public class PostDto {
     @Size(min = 1, max = 500)
     private String text;
 
+    @NotNull
+    private LocalDateTime postedAt;
+
+    @NotNull
+    private int likeCount;
 }

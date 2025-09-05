@@ -6,6 +6,8 @@ import com.example.demo.dto.UserResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
@@ -13,9 +15,12 @@ public interface UserMapper {
     @Mapping(target = "posts", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "lastLoggedInAt", ignore = true)
+    @Mapping(target = "likedPosts", ignore = true)
     @Mapping(target = "role", constant = "USER")
     User userRegistrationDtoToUser(UserRegistrationDto userRegistrationDto);
 
     UserResponseDto userToUserResponseDto(User user);
+
+    List<UserResponseDto> userListToUserResponseDtoList(List<User> list);
 
 }

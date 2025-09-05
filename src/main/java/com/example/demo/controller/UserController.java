@@ -1,9 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.PostDto;
-import com.example.demo.dto.UserPasswordChangeDto;
-import com.example.demo.dto.UserRegistrationDto;
-import com.example.demo.dto.UserResponseDto;
+import com.example.demo.dto.*;
 import com.example.demo.facade.UserFacade;
 import org.springframework.http.MediaType;
 import jakarta.validation.Valid;
@@ -22,18 +19,23 @@ public class UserController {
 
     private final UserFacade userFacade;
 
+    @GetMapping()
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+        return ResponseEntity.ok().body(userFacade.getAllUsers());
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok().body(userFacade.getUserById(id));
     }
 
     @GetMapping(value = "/{id}/posts")
-    public ResponseEntity<List<PostDto>> getPostsMadeByUser(@PathVariable Long id) {
+    public ResponseEntity<List<PostResponseDto>> getPostsMadeByUser(@PathVariable Long id) {
         return ResponseEntity.ok().body(userFacade.getPostsMadeByUser(id));
     }
 
-    @GetMapping(value = "/{id}/likePosts")
-    public ResponseEntity<List<PostDto>> getPostsLikedByUser(@PathVariable Long id) {
+    @GetMapping(value = "/{id}/likedPosts")
+    public ResponseEntity<List<PostResponseDto>> getPostsLikedByUser(@PathVariable Long id) {
         return ResponseEntity.ok().body(userFacade.getPostsLikedByUser(id));
     }
 
